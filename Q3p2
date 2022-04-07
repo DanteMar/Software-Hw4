@@ -1,0 +1,118 @@
+
+CREATE TABLE Instrument (
+                Name VARCHAR NOT NULL,
+                Pitch INTEGER NOT NULL,
+                CONSTRAINT Instrument_pk PRIMARY KEY (Name)
+);
+
+
+CREATE TABLE Address (
+                AddressID INTEGER NOT NULL,
+                Telephone INTEGER NOT NULL,
+                Number INTEGER NOT NULL,
+                Street1 VARCHAR NOT NULL,
+                Street2 VARCHAR NOT NULL,
+                City VARCHAR NOT NULL,
+                State VARCHAR NOT NULL,
+                Zip_Code INTEGER NOT NULL,
+                CONSTRAINT Address_pk PRIMARY KEY (AddressID)
+);
+
+
+CREATE TABLE Musician (
+                SSN INTEGER NOT NULL,
+                Name VARCHAR NOT NULL,
+                AddressID INTEGER NOT NULL,
+                CONSTRAINT Musician_pk PRIMARY KEY (SSN)
+);
+
+
+CREATE TABLE IntrumentMusician (
+                Name VARCHAR NOT NULL,
+                SSN INTEGER NOT NULL,
+                CONSTRAINT IntrumentMusician_pk PRIMARY KEY (Name, SSN)
+);
+
+
+CREATE TABLE Album (
+                AlbumID INTEGER NOT NULL,
+                Release_Date DATE NOT NULL,
+                Format VARCHAR NOT NULL,
+                Title VARCHAR NOT NULL,
+                Age VARCHAR NOT NULL,
+                SSN INTEGER NOT NULL,
+                CONSTRAINT Album_pk PRIMARY KEY (AlbumID)
+);
+
+
+CREATE TABLE Song (
+                Title VARCHAR NOT NULL,
+                Length INTEGER NOT NULL,
+                AlbumID INTEGER NOT NULL,
+                SSN INTEGER NOT NULL,
+                CONSTRAINT Song_pk PRIMARY KEY (Title)
+);
+
+
+CREATE TABLE SongInstrument (
+                Title VARCHAR NOT NULL,
+                Name VARCHAR NOT NULL,
+                CONSTRAINT SongInstrument_pk PRIMARY KEY (Title, Name)
+);
+
+
+ALTER TABLE SongInstrument ADD CONSTRAINT Instrument_SongInstrument_fk
+FOREIGN KEY (Name)
+REFERENCES Instrument (Name)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE IntrumentMusician ADD CONSTRAINT Instrument_IntrumentMusician_fk
+FOREIGN KEY (Name)
+REFERENCES Instrument (Name)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Musician ADD CONSTRAINT Address_Musician_fk
+FOREIGN KEY (AddressID)
+REFERENCES Address (AddressID)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Song ADD CONSTRAINT Musician_Song_fk
+FOREIGN KEY (SSN)
+REFERENCES Musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Album ADD CONSTRAINT Musician_Album_fk
+FOREIGN KEY (SSN)
+REFERENCES Musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE IntrumentMusician ADD CONSTRAINT Musician_IntrumentMusician_fk
+FOREIGN KEY (SSN)
+REFERENCES Musician (SSN)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Song ADD CONSTRAINT Album_Song_fk
+FOREIGN KEY (AlbumID)
+REFERENCES Album (AlbumID)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE SongInstrument ADD CONSTRAINT Song_SongInstrument_fk
+FOREIGN KEY (Title)
+REFERENCES Song (Title)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
